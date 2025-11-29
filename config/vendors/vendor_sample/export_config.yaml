@@ -1,0 +1,107 @@
+# Export Configuration
+# Controls how data is exported in Phase 5
+
+# Export formats
+export_formats:
+  - format: csv
+    enabled: true
+    options:
+      include_metadata: true
+      include_errors: true
+      include_raw: false
+      include_normalized: false
+
+  - format: excel
+    enabled: true
+    options:
+      status: BOTH  # Export both valid and flagged to separate sheets
+      include_metadata: true
+      include_errors: true
+      auto_format: true
+      freeze_header: true
+
+  - format: json
+    enabled: true
+    options:
+      export_format: array  # or 'jsonl' for newline-delimited
+      include_metadata: true
+      include_errors: true
+      pretty: true
+      indent: 2
+
+  - format: xml
+    enabled: true
+    options:
+      include_metadata: true
+      include_errors: true
+      root_element: data
+      row_element: row
+      pretty_print: true
+
+# Default export options
+defaults:
+  # Which rows to export
+  status: BOTH  # VALID, FLAGGED, BOTH, or None (all)
+  
+  # Fields to include (None = all)
+  fields: null
+  
+  # Include metadata columns
+  include_metadata: true
+  
+  # Include validation errors (for flagged rows)
+  include_errors: true
+  
+  # Include source data
+  include_raw: false
+  include_normalized: false
+
+# Naming conventions
+file_naming:
+  # Template: {original_name}_{status}.{format}
+  # Example: orders_valid.csv, orders_flagged.xlsx
+  valid_suffix: _valid
+  flagged_suffix: _flagged
+
+# Output structure
+output:
+  # Base output directory
+  base_dir: ./exports
+  
+  # Create subdirectories by format
+  by_format: true
+  # Results in: ./exports/csv/, ./exports/excel/, etc.
+  
+  # Create subdirectories by date
+  by_date: false
+  # Results in: ./exports/2025-01-15/, etc.
+  
+  # Create subdirectories by status
+  by_status: false
+  # Results in: ./exports/valid/, ./exports/flagged/
+
+# Processing
+processing:
+  # Batch size for exports
+  batch_size: 1000
+  
+  # Memory-efficient streaming for large files
+  stream_large_files: true
+  
+  # Compression (future)
+  # compress_output: false
+  # compression_format: zip  # or gzip
+
+# Reporting
+reporting:
+  # Generate export report
+  generate_report: true
+  
+  # Report location
+  report_dir: ./exports/reports
+  
+  # Include statistics in report
+  include_stats: true
+  
+  # Include export paths in report
+  include_paths: true

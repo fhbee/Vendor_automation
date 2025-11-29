@@ -1,0 +1,15 @@
+# How to map your vendor's fields to canonical fields
+mappings:
+  # Vendor field: Canonical field
+  Order_ID: order_id
+  Customer_Email: customer_email
+  Order_Date: order_date
+  Qty: quantity
+  Unit_Price: unit_price
+  Total: total_amount
+
+# Field matching methods
+matching_priority:
+  - exact          # Exact match
+  - normalized     # Remove punctuation and try again
+  - ai_suggested   # Ask AI (if enabled)

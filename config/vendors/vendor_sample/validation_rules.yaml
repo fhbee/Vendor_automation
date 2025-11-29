@@ -1,0 +1,91 @@
+# Sample Validation Rules Configuration
+# This shows field-level, cross-field, and semantic validation rules
+
+# Field-level validation rules (structural)
+field_validation_rules:
+  - field: "order_id"
+    rule_type: "required"
+    message: "Order ID is required"
+  
+  - field: "order_date"
+    rule_type: "date_format"
+    message: "Order date must be ISO8601 format (YYYY-MM-DD)"
+  
+  - field: "customer_email"
+    rule_type: "type"
+    expected_type: "email"
+    message: "Customer email must be valid email format"
+  
+  - field: "quantity"
+    rule_type: "type"
+    expected_type: "integer"
+    message: "Quantity must be an integer"
+  
+  - field: "quantity"
+    rule_type: "range"
+    min_value: 1
+    max_value: 999999
+    message: "Quantity must be between 1 and 999,999"
+  
+  - field: "unit_price"
+    rule_type: "range"
+    min_value: 0
+    max_value: 999999.99
+    message: "Unit price must be between 0 and 999,999.99"
+  
+  - field: "currency"
+    rule_type: "enum"
+    values: ["USD", "EUR", "GBP", "JPY", "CNY"]
+    message: "Currency must be one of: USD, EUR, GBP, JPY, CNY"
+  
+  - field: "order_status"
+    rule_type: "enum"
+    values: ["pending", "confirmed", "shipped", "delivered", "cancelled"]
+    message: "Order status must be: pending, confirmed, shipped, delivered, cancelled"
+  
+  - field: "product_code"
+    rule_type: "regex"
+    pattern: "^[A-Z]{3}-\\d{6}$"
+    message: "Product code must match format: ABC-123456"
+  
+  - field: "phone_number"
+    rule_type: "length"
+    min_length: 10
+    max_length: 15
+    message: "Phone number must be 10-15 digits"
+
+# Cross-field validation rules (business logic)
+cross_field_rules:
+  # Formula: quantity * unit_price == total_amount
+  - fields: ["quantity", "unit_price", "total_amount"]
+    rule_type: "formula"
+    formula: "quantity * unit_price == total_amount"
+    message: "Total amount must equal quantity × unit price"
+  
+  # Dependency: if expedited=true, then shipping_cost required
+  - fields: ["expedited", "shipping_cost"]
+    rule_type: "dependency"
+    condition_field: "expedited"
+    condition_value: true
+    required_field: "shipping_cost"
+    message: "Shipping cost is required when expedited is true"
+  
+  # Mutual exclusion: cannot have both discount and discount_code
+  - fields: ["discount", "discount_code"]
+    rule_type: "mutual_exclusion"
+    message: "Cannot apply both discount and discount code"
+
+# Semantic validation rules (domain logic)
+semantic_rules:
+  # Status transition validation
+  - rule_type: "status_transition"
+    allowed_from: ["pending", "confirmed"]
+    message: "Order can only transition from pending or confirmed status"
+  
+  # Business hours validation
+  - rule_type: "business_hours"
+    message: "Orders can only be placed during business hours (9 AM - 5 PM)"
+  
+  # Inventory validation (custom)
+  - rule_type: "inventory"
+    message: "Insufficient inventory for this product"
