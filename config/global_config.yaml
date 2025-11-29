@@ -1,0 +1,34 @@
+# Global configuration for vendor automation
+application:
+  name: "Vendor Automation"
+  version: "0.1.0"
+  
+processing:
+  # Batch processing settings
+  batch_size: 500  # Number of rows to process in memory at once
+  enable_chunking: true
+  chunk_size: 5000  # For large file streaming
+  
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  json_format: true
+  console_output: true
+  
+paths:
+  input_folder: "./input_files"
+  output_folder: "./output"
+  archive_folder: "./archive"
+  metadata_db: "./metadata/automation.db"
+  log_folder: "./logs"
+  config_folder: "./config"
+  
+performance:
+  # Memory and I/O optimization
+  use_memory_mapping: false
+  cache_enabled: true
+  cache_size_mb: 512
+  
+validation:
+  # Global validation settings
+  fail_on_error: false  # Continue processing even if some rows fail
+  strict_mode: false  # If true, enforce all rules strictly
